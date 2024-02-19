@@ -15,3 +15,22 @@ BEGIN
         LIMIT 1 OFFSET n
     );
 END
+
+Methode 2:
+
+CREATE FUNCTION getNthHighestSalary(n INT) RETURNS INT
+BEGIN
+    
+    RETURN (
+        with cte as (
+
+        select 
+        *,dense_rank() over(order by salary desc) as rnk
+        from
+        Employee)
+        select distinct salary 
+        from  cte 
+        where rnk=n
+    );
+END
+

@@ -1,0 +1,21 @@
+PROBLEM 553:::
+
+with cte1 as (
+select
+player_id,min(event_date) as start_date
+
+
+from
+Activity 
+group by player_id
+),
+
+cte2 as (
+select *, date_add(start_date, interval 1 day) as next_date
+
+from 
+cte1
+)
+
+(select count(distinct player_id)
+from Activity where (player_id, event_date) in (select player_id,next_date from cte2))/(select count( distinct player_id) from Activity)

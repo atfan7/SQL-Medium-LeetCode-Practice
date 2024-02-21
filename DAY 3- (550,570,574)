@@ -32,3 +32,18 @@ on m.managerId =e.id
 
 group by m.managerId
 having count(m.id)>=5
+
+PROBLEM 574:::
+
+select
+name
+from
+
+Candidate c inner join Vote v
+on c.id = v.candidateId
+
+group by name
+order by count(v.id) desc
+limit 1
+
+

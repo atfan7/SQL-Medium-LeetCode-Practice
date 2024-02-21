@@ -19,3 +19,16 @@ cte1
 
 (select count(distinct player_id)
 from Activity where (player_id, event_date) in (select player_id,next_date from cte2))/(select count( distinct player_id) from Activity)
+
+PROBLEM 570:::
+
+select
+
+e.name
+
+from
+Employee m inner join Employee e
+on m.managerId =e.id
+
+group by m.managerId
+having count(m.id)>=5

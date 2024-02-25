@@ -29,3 +29,23 @@ when id not in (select p_id from Tree where p_id is not null) then 'Leaf'
 else 'Inner' end as type 
 from
 Tree
+
+PROBLEM 612:::
+
+with cte as (
+select
+*,row_number() over() as rnk
+
+from 
+Point2D
+
+
+)
+
+select 
+round (sqrt( pow(c2.x -c1.x,2) +   pow(c2.y -c1.y,2)  ),2) as shortest
+from
+cte c1 inner join cte c2
+on c1.rnk <c2.rnk
+order by shortest asc 
+limit 1

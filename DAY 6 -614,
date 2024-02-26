@@ -1,0 +1,27 @@
+PROBLEM 614:::
+
+with cte as (
+select 
+follower,count(followee) as num1
+from
+Follow
+
+group by follower 
+having count(followee) >=1
+),
+
+cte1 as (
+
+
+select
+followee,count(follower) as num
+from
+Follow 
+group by followee
+having count(follower) >=1
+)
+
+select follower ,num
+from cte c inner join cte1 c1
+on c.follower =c1.followee
+order by follower asc

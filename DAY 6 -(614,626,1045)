@@ -45,3 +45,38 @@ id end as id, student
 
 from cte
 order by id asc
+
+
+PROBLEM 1045:::
+
+ith cte as (
+select
+
+customer_id,p.product_key
+from 
+
+Customer c right join Product p
+on c.product_key=p.product_key
+)
+
+select
+distinct customer_id
+from 
+cte
+group by customer_id
+having count(distinct product_key) =(select count(distinct product_key) from Product)
+
+
+Solution 2:
+
+select
+customer_id
+
+from 
+Customer
+group by customer_id 
+having count(distinct product_key)= (select count(distinct product_key) from Product)
+order by customer_id asc
+
+
+

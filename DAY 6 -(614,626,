@@ -25,3 +25,23 @@ select follower ,num
 from cte c inner join cte1 c1
 on c.follower =c1.followee
 order by follower asc
+
+PROBLEM 626:::
+
+with cte as (
+select
+*,lead(id) over(order by id asc) as next,lag(id) over(order by id asc) as previous
+from
+
+Seat
+
+)
+
+select
+case when (id%2=1 and next is not null) then next
+when (id%2=0) then previous
+else
+id end as id, student
+
+from cte
+order by id asc

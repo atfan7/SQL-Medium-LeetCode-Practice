@@ -1,0 +1,38 @@
+PROBLEM 1070:::
+
+select product_id,year as first_year,quantity,price
+from (
+select
+product_id,year,quantity,price,
+rank() over(partition by product_id order by year asc) as rnk
+
+from
+
+Sales
+
+)as t
+where rnk=1
+
+PROBLEM 1077:::
+
+with cte as (
+select
+
+p.project_id,p.employee_id,name,experience_years
+from 
+
+Project p left join Employee e
+on p.employee_id = e.employee_id
+),
+
+cte2 as (
+select
+*,rank() over(partition by project_id order by experience_years desc ) as rnk
+
+from 
+cte 
+)
+
+select project_id,employee_id
+from cte2 where rnk=1
+

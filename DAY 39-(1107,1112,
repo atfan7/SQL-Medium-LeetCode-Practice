@@ -15,3 +15,22 @@ from
 cte 
 where rnk =1 and ( activity_date between date_sub('2019-06-30', interval 90 day) and '2019-06-30')
 group by activity_date
+
+
+PROBLEM 1112:::
+
+
+with cte as (
+select 
+student_id,
+course_id,
+grade,
+row_number() over(partition by student_id order by grade desc,course_id asc) as rnk
+from Enrollments
+
+)
+
+select student_id,course_id,
+grade
+from 
+cte where rnk =1

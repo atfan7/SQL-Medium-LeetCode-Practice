@@ -34,3 +34,18 @@ select student_id,course_id,
 grade
 from 
 cte where rnk =1
+
+PROBLEM 1126:::
+
+with cte as (
+select
+*, avg(occurrences) over(partition by event_type) as avgg
+
+from
+Events
+)
+
+select business_id
+from cte where occurrences>avgg
+group by business_id
+having count(event_type) >1

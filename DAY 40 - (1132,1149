@@ -23,3 +23,14 @@ cte1 group by action_date)
 
 select round (avg(perc)*100,2) as average_daily_percent
 from cte2
+
+
+PROBLEM 1149:::
+
+select
+distinct viewer_id as id
+from
+Views
+group by viewer_id,view_date
+having count(distinct article_id) >1
+order by id asc

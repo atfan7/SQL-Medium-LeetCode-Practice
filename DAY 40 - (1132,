@@ -1,0 +1,25 @@
+PROBLEM 1132:::
+
+with cte as (
+select 
+
+*
+from
+
+Actions 
+where extra ='spam' and extra ='spam'),
+
+cte1 as (
+select distinct c.post_id as cp ,c.action_date,r.post_id as rp,remove_date
+from cte c left join Removals r
+on c.post_id =r.post_id
+),
+
+cte2 as (
+select *,sum(case when remove_date is null then 0 else 1 end )/count(*) as perc
+
+from
+cte1 group by action_date)
+
+select round (avg(perc)*100,2) as average_daily_percent
+from cte2

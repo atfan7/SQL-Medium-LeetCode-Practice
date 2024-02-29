@@ -34,3 +34,21 @@ Views
 group by viewer_id,view_date
 having count(distinct article_id) >1
 order by id asc
+
+
+PROBLEM 1158:::
+
+with cte as (
+select
+
+buyer_id,ifnull(count(order_id),0) as orders_in_2019
+from Orders
+where order_date like '2019%'
+group by buyer_id
+)
+
+select
+
+u.user_id as buyer_id, join_date,ifnull(orders_in_2019,0) as orders_in_2019
+from Users u left join cte c
+on u.user_id=c.buyer_id

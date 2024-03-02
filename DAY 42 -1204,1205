@@ -1,0 +1,39 @@
+PROBLEM 1204:::
+
+with cte as (
+select 
+*,sum(weight) over(order by turn asc) as TW
+from 
+Queue ),
+
+cte1 as (
+
+select person_name , TW
+from cte where TW<=1000
+)
+
+select person_name
+from cte1 
+order by TW desc 
+limit 1
+
+PROBLEM 1205:::
+
+with t1 as(
+select id, country, 'chargeback' as 'state', amount, c.trans_date
+from Chargebacks c
+join Transactions t on c.trans_id = t.id
+union
+
+select *
+from Transactions
+where state = 'approved')
+
+
+select left(trans_date,7) as 'month', country,
+    sum(state = 'approved') as approved_count, 
+    sum(if(state = 'approved', amount, 0)) as approved_amount, 
+    sum(state = 'chargeback') as chargeback_count, 
+    sum(if(state = 'chargeback', amount, 0)) as chargeback_amount
+from t1
+group by left(trans_date,7), country

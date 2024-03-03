@@ -16,3 +16,22 @@ from
 cte c inner join Likes l
 on c.user2_id =l.user_id
 and page_id not in (select page_id from Likes where user_id=1)
+
+
+PROBLME 1270:::
+select
+
+e1.employee_id
+from
+
+Employees e1 left join Employees e2
+on e1.manager_id=e2.employee_id
+
+
+left join Employees e3
+on e2.manager_id =e3.employee_id
+
+left join Employees e4
+on e3.manager_id =e4.employee_id
+where e1.employee_id != e1.manager_id
+and (e4.manager_id =1)

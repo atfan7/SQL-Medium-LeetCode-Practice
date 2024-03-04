@@ -1,0 +1,16 @@
+PROBLEM 1308 :::
+
+with cte as (
+select 
+gender,day,sum(score_points) as totl
+
+
+from 
+
+Scores
+group by gender,day
+order by gender asc, day asc)
+
+select gender, day,
+sum(totl) over(partition by gender order by day asc) as total
+from cte

@@ -1,0 +1,39 @@
+PROBLEM 1308 :::
+
+with cte as (
+select 
+gender,day,sum(score_points) as totl
+
+
+from 
+
+Scores
+group by gender,day
+order by gender asc, day asc)
+
+select gender, day,
+sum(totl) over(partition by gender order by day asc) as total
+from cte
+
+
+PROBLEM 1321:::
+with cte as (
+select
+
+visited_on,sum(amount) as amt
+from
+Customer
+group by  visited_on)
+
+, cte2 as (
+select
+visited_on,sum(amt) over(order by visited_on rows between 6 preceding and current row ) as amount,
+
+round (avg(amt) over(order by visited_on rows between 6 preceding and current row ),2) as average_amount
+
+
+from 
+cte order by visited_on asc )
+
+select * from cte2
+where visited_on >= ( (select min(visited_on) from cte)+6 )

@@ -37,3 +37,37 @@ cte order by visited_on asc )
 
 select * from cte2
 where visited_on >= ( (select min(visited_on) from cte)+6 )
+
+PROBLEM 1341 :::
+
+(
+
+select u.name as results
+
+from 
+
+MovieRating m left join Users u on
+m.user_id = u.user_id
+
+group by m.user_id 
+order by count(m.rating) desc ,u.name asc 
+limit 1 
+)
+
+
+union  all
+(
+select mo.title as results
+
+
+from MovieRating mr left join Movies mo
+
+on mr.movie_id=mo.movie_id
+where  created_at like '2020-02%'
+
+group by mr.movie_id
+order by avg(rating) desc,mo.title asc
+limit 1
+)
+
+

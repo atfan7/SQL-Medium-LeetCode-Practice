@@ -31,3 +31,34 @@ ON i.user_id = c.customer_id
 LEFT JOIN cte
 ON i.user_id = cte.user_id
 ORDER BY 1;
+
+PROBLEM 1393:::
+
+with cte as (
+select
+
+stock_name ,sum(price) as buy
+from
+
+Stocks 
+where operation ='Buy'
+group by stock_name)
+
+,cte1 as
+(
+select
+
+stock_name ,sum(price) as sell
+from
+
+Stocks 
+where operation ='sell'
+group by stock_name
+)
+select 
+cte.stock_name,
+ifnull(case when buy >sell then -(buy-sell)
+when sell >buy then sell-buy end,0) as capital_gain_loss
+from cte inner join cte1
+on cte.stock_name= cte1.stock_name
+order by stock_name asc 

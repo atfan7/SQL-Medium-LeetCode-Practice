@@ -1,0 +1,29 @@
+PROBLEM 1398 :::
+
+select
+c.customer_id, customer_name
+from
+
+Customers c inner join Orders o
+on c.customer_id = o.customer_id
+group by customer_id
+having sum(product_name='A')>0 and sum(product_name='B')>0 and sum(product_name='C') =0
+order by c.customer_id
+
+PROBLEM 1440:::
+
+select
+
+e1.*, case when v1.value > v2.value and operator ='>' then 'true'
+when v1.value < v2.value and operator ='<' then 'true'
+when v1.value = v2.value and operator= '=' then 'true'
+else 'false'
+end as value
+
+from Expressions e1
+inner join variables v1
+
+on 
+e1.left_operand =v1.name
+inner join variables v2
+on e1.right_operand =v2.name

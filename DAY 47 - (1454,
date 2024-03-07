@@ -1,0 +1,24 @@
+PROBLEM 1454 :::
+
+with cte as (
+select distinct id, login_date
+from 
+Logins 
+order by id asc
+),
+
+cte1 as (
+
+select 
+id, login_date , lead(login_date,4) over(partition by id order by login_date asc) as ld
+from cte 
+)
+
+select distinct
+b.id,b.name 
+from 
+
+cte1 a join Accounts b 
+on a.id =b.id
+where datediff(ld,login_date) =4
+order by a.id

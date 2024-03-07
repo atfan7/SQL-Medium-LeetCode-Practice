@@ -22,3 +22,21 @@ cte1 a join Accounts b
 on a.id =b.id
 where datediff(ld,login_date) =4
 order by a.id
+
+PROBLEM 1459 :::
+
+with cte as (
+select
+
+p1.id as p1, p2.id as p2, abs((p1.x_value -p2.x_value) * (p1.y_value -p2.y_value)) as 'area'
+from 
+Points p1 cross join Points p2
+on p1.id !=p2.id
+and p2.id >p1.id
+
+)
+select 
+p1,p2,area
+from cte 
+where area !=0
+order by area desc, p1 asc, p2 asc

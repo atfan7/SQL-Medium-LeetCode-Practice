@@ -1,0 +1,28 @@
+PROBLEM 1501:::
+
+with cte as (
+select 
+
+id, name, 
+substr(phone_number,1,3) as code 
+from
+Person p
+
+)
+,cte2 as (
+select ct.id,c.name,ct.code
+from 
+cte ct left join Country c 
+on ct.code=c.country_code
+)
+, cte3 as (
+select 
+cte2.id,cte2.name,ca.caller_id,ca.callee_id,ca.duration,
+avg(duration) over(partition by cte2.name order by cte2.name) as local_avg
+
+from cte2 inner join Calls ca
+on cte2.id =ca.caller_id or cte2.id=ca.callee_id
+)
+
+select
+distinct cte3.name as country from cte3 where cte3.local_avg > (select avg(duration) from cte3)

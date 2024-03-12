@@ -1,0 +1,27 @@
+PROBLEM 1555:::
+
+with cte as (
+select
+
+u.user_id,
+
+
+ifnull (sum(case when u.user_id = t.paid_by then amount* -1
+when u.user_id =t.paid_to then amount *1 end ) ,0) + u.credit as credit
+
+from
+Users u 
+left join Transactions t on 
+u.user_id=t.paid_by
+or u.user_id=t.paid_to
+
+group by u.user_id
+)
+
+select
+u.user_id, u.user_name , c.credit, case when c.credit >0 then 'No' else 'Yes' end as credit_limit_breached
+
+
+
+from Users u left join cte c on 
+u.user_id= c.user_id

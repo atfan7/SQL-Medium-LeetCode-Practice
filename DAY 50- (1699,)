@@ -21,3 +21,12 @@ from_id as person1 , to_id as person2, count(*) as call_count,sum(duration) as t
 from
 cte
 group by person1 , person2
+
+2nd method :::
+
+SELECT LEAST(from_id,to_id) as person1,
+GREATEST(from_id,to_id) as person2,
+COUNT(*) as call_count,
+SUM(duration) as total_duration
+FROM Calls
+GROUP BY person1,person2;

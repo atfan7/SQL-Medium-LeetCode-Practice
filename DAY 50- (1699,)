@@ -30,3 +30,23 @@ COUNT(*) as call_count,
 SUM(duration) as total_duration
 FROM Calls
 GROUP BY person1,person2
+
+
+PROBLEM 1709 :::
+
+with cte as (
+select
+user_id, visit_date , 
+
+ifnull(lead(visit_date) over(partition by user_id order by visit_date asc),'2021-1-1') as ld
+from
+
+UserVisits
+)
+
+select
+user_id, max(datediff(ld,visit_date)) as biggest_window
+from
+cte
+group by user_id
+order by user_id asc 

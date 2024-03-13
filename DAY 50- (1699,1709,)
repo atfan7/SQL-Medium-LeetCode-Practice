@@ -50,3 +50,15 @@ from
 cte
 group by user_id
 order by user_id asc 
+
+PROBLEM 1715:::
+
+select
+
+sum((ifnull(b.apple_count,0) + ifnull(c.apple_count,0))) as apple_count  ,sum((ifnull(b.orange_count,0) + ifnull(c.orange_count,0))) as orange_count
+from
+Boxes b
+left join Chests c
+on b.chest_id =c.chest_id
+
+

@@ -8,3 +8,36 @@ LogInfo a,LogInfo b
 where a.account_id =b.account_id
 and a.ip_address != b.ip_address
 and a.login between b.login and b.logout
+
+PROBLEM 1783:::
+
+with cte as (
+(select
+Wimbledon as id from Championships)
+
+union all
+
+(select
+Fr_open as id from Championships)
+
+union all
+(select
+US_open as id from Championships)
+
+union all
+
+(select
+Au_open as id from Championships)
+),
+
+cte2 as (
+    select id, count(*) as grand_slams_count
+from cte
+group by id
+)
+
+select 
+p.player_id ,p.player_name,grand_slams_count
+from Players p inner join cte2 c on
+p.player_id =c.id
+

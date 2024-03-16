@@ -41,3 +41,49 @@ p.player_id ,p.player_name,grand_slams_count
 from Players p inner join cte2 c on
 p.player_id =c.id
 
+PROBLEM 1811:::
+
+with cte as (
+select gold_medal as user_id , contest_id
+from 
+Contests
+
+union 
+select silver_medal as user_id  , contest_id
+from 
+Contests
+
+union
+
+select  bronze_medal as user_id , contest_id
+from 
+Contests
+
+)
+, cte2 as (
+select user_id,contest_id, row_number() over(partition by user_id order by contest_id) as rnk
+from
+cte 
+
+)
+, cte3 as (
+select user_id
+from 
+cte2 
+group by user_id, contest_id-rnk
+having count(*) >=3
+
+union 
+
+select 
+gold_medal
+from Contests
+group by gold_medal
+having count(*) >=3
+)
+
+select 
+u.name,u.mail
+from
+cte3 c left join Users u on 
+c.user_id=u.user_id

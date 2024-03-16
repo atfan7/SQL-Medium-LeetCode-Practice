@@ -30,3 +30,30 @@ from matches m
 join teams t on m.home_team_id = t.team_id or m.away_team_id = t.team_id
 group by team_name
 order by points desc, goal_diff desc, team_name
+
+PROBLEM 1843:::
+
+with cte as (
+select
+account_id, DATE_FORMAT(day,'%Y%m') as datte ,sum(amount) as incom
+from 
+Transactions
+where type ='Creditor'
+group by account_id,DATE_FORMAT(day,'%Y%m')
+)
+,
+cte2 as (
+select
+c.*,a.max_income,lead(c.datte) over(partition by c.account_id order by c.datte asc) as ld
+from 
+cte c left join Accounts a on
+c.account_id =a.account_id 
+where c.incom > a.max_income
+)
+
+select distinct
+account_id
+from 
+cte2
+where (ld - datte) = 1
+order by account_id asc

@@ -1,0 +1,38 @@
+PROBLEM 1867 :::
+
+with cte as (
+select 
+order_id,
+max(quantity) as max_quan,
+avg(quantity) as avg_quan
+
+from 
+OrdersDetails
+group by order_id 
+)
+
+select
+order_id
+
+from 
+cte 
+where max_quan >(select max(avg_quan) from cte)
+
+
+PROBLEM 1875:::
+
+with cte as(
+select
+*, count(employee_id) over(partition by salary) as cnt
+
+from 
+Employees
+)
+
+select 
+employee_id,name,salary,
+dense_rank() over(order by salary) as team_id
+from 
+cte 
+where cnt>=2
+order by team_id, employee_id

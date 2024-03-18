@@ -1,0 +1,16 @@
+PROBLEM 1934:::
+
+with cte as (
+select
+user_id,
+round (sum(case when action ='confirmed' then 1 else 0 end) / count(*) ,2) as rate
+
+
+from Confirmations
+group by user_id
+)
+
+select s.user_id, ifnull(c.rate,0) as confirmation_rate
+from  Signups s
+left join cte c
+on s.user_id =c.user_id

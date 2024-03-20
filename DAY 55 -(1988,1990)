@@ -1,0 +1,22 @@
+PROBLEM 1988:::
+
+select
+s.school_id, ifnull(min(e.score),-1) as score 
+
+from 
+
+Schools s left join Exam e
+on s.capacity >= e.student_count 
+group by s.school_id
+
+PROBLEM 1990:::
+
+SELECT B.platform, B.experiment_name, IFNULL(A.num_experiment,0) AS num_experiments 
+FROM (
+(SELECT COUNT(*) AS num_experiment, platform, experiment_name 
+ FROM Experiments GROUP BY platform, experiment_name) A 
+    RIGHT JOIN (
+        SELECT DISTINCT A.platform, X.experiment_name FROM 
+		(SELECT "IOS" AS platform UNION SELECT "Android" AS platform UNION SELECT "Web" AS platform) A 
+        CROSS JOIN (SELECT "Programming" AS experiment_name UNION SELECT "Sports" AS experiment_name UNION SELECT "Reading" AS experiment_name) X
+    ) B ON A.platform = B.platform AND A.experiment_name = B.experiment_name)

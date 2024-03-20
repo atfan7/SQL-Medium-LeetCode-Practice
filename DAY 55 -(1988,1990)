@@ -20,3 +20,13 @@ FROM (
 		(SELECT "IOS" AS platform UNION SELECT "Android" AS platform UNION SELECT "Web" AS platform) A 
         CROSS JOIN (SELECT "Programming" AS experiment_name UNION SELECT "Sports" AS experiment_name UNION SELECT "Reading" AS experiment_name) X
     ) B ON A.platform = B.platform AND A.experiment_name = B.experiment_name)
+
+PROBLEM 2020:::
+
+SELECT
+COUNT(Sub.account_id) AS accounts_count
+FROM Subscriptions Sub
+JOIN Streams Str
+ON Sub.account_id = Str.account_id
+WHERE (YEAR(start_date) = 2021 OR YEAR(end_date) = 2021) 
+AND YEAR(stream_date) != 2021

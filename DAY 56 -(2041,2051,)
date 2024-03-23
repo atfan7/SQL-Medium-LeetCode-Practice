@@ -1,0 +1,46 @@
+PROBLEM ::: 2041
+
+select 
+candidate_id
+from 
+Candidates c
+left join Rounds r on
+c.interview_id= r.interview_id
+where c.years_of_exp >=2
+group by candidate_id 
+having sum(score) >15
+
+PROBLEM 2051:::
+
+with cte as (
+select
+m.member_id,name,ifnull(v.visit_date,0) as visit_date,ifnull(p.visit_id,0) as visit_id,ifnull(p.charged_amount,0) as charged_amount
+from 
+Members m 
+left join Visits v
+on m.member_id=v.member_id
+left join 
+Purchases p
+on v.visit_id=p.visit_id
+order by m.member_id
+
+)
+, cte2 as (
+select 
+member_id , name ,100* sum(case when visit_id !=0 then 1 else 0 end) / sum(case when visit_date !=0 then 1 else 0 end) as cr
+from cte 
+group by member_id
+order by member_id
+)
+
+select 
+member_id,name , 
+case when cr >=80 then 'Diamond'
+when cr>=50 and cr <80 then 'Gold'
+when cr<50 then 'Silver'
+when cr=0 or cr is null  then 'Bronze'
+end as category
+
+
+from 
+cte2 

@@ -44,3 +44,25 @@ end as category
 
 from 
 cte2 
+
+PROBLEM 2066::
+
+with cte as (
+select 
+account_id,day, case when type = 'Withdraw' then amount *-1 else amount end as bal
+
+from 
+Transactions )
+
+select 
+account_id, day,
+sum(cte.bal) over(partition by cte.account_id order by cte.day) as balance
+from cte
+order by account_id asc,day asc
+
+
+
+
+
+
+

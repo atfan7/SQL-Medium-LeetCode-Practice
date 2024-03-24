@@ -42,3 +42,23 @@ select airport_id
 from 
 cte3
 where rn=1
+
+PROBLEM 2142:::
+
+select
+bus_id,
+sum(passengers_cnt) as passengers_cnt
+from 
+(
+select
+ bus_id,
+if(passenger_id is not null and rank() over (partition by passenger_id order by b.arrival_time ) =1,1,0) passengers_cnt
+from
+Buses b
+left join Passengers p
+on p.arrival_time <= b.arrival_time
+) a group by 1
+order by bus_id
+
+
+

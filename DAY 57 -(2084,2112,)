@@ -1,0 +1,44 @@
+PROBLEM ::: 2084
+
+WITH cte AS (
+SELECT *
+,MIN(order_type) OVER(PARTITION BY customer_id) AS
+min_order_type
+FROM Orders)
+
+SELECT order_id, customer_id, order_type
+FROM cte
+WHERE (order_type + min_order_type <>1)
+
+PROBLEM 2112:::
+
+with cte as (
+(select 
+departure_airport as airport_id,flights_count
+from 
+Flights )
+
+union all
+
+(select 
+arrival_airport as airport_id,flights_count
+from 
+Flights )
+),
+cte2 as (
+select 
+*,sum(flights_count) as fc
+
+from 
+cte 
+group by airport_id
+)
+, cte3 as (
+
+select *,rank() over(order by fc desc) as rn
+from cte2 )
+
+select airport_id
+from 
+cte3
+where rn=1

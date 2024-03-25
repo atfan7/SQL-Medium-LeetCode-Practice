@@ -1,0 +1,36 @@
+PROBLEM 2159 :::
+
+with cte as (
+select
+first_col, row_number() over(order by first_col asc) as rnk1
+
+from 
+Data)
+
+,cte2 as 
+(
+select
+second_col, row_number() over(order by second_col desc) as rnk2
+
+from 
+Data)
+select 
+c.first_col, c1.second_col
+
+from 
+cte c inner join cte2 c1
+on c.rnk1=c1.rnk2
+
+PROBLEM 2175:::
+
+WITH cte AS
+(SELECT t.team_id, t.name, t.points, p.points_change, ROW_NUMBER() OVER(ORDER BY points DESC, name) AS initial_rank, ROW_NUMBER() OVER(ORDER BY (points +points_change) DESC, name) AS new_rank
+
+FROM TeamPoints t
+LEFT JOIN PointsChange p
+ON t.team_id = p.team_id)
+
+
+
+SELECT team_id, name, CAST(initial_rank AS SIGNED) - CAST(new_rank AS SIGNED) AS rank_diff
+FROM cte

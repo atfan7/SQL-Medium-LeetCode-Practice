@@ -34,3 +34,19 @@ ON t.team_id = p.team_id)
 
 SELECT team_id, name, CAST(initial_rank AS SIGNED) - CAST(new_rank AS SIGNED) AS rank_diff
 FROM cte
+
+PROBLEM 2228:::
+
+with cte as(
+select
+purchase_id ,user_id ,purchase_date,
+lead(purchase_date) over(partition by user_id order by purchase_date) as ld_date
+
+from 
+Purchases
+)
+
+select 
+distinct user_id
+from cte where datediff(ld_date,purchase_date) <=7
+order by user_id

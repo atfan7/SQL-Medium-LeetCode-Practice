@@ -1,0 +1,23 @@
+PROBLEM 2238:::
+
+with cte1 as (
+select
+
+distinct driver_id
+from 
+Rides 
+)
+, cte2 as (
+select 
+passenger_id as driver_id , count(*) as cnt
+from
+Rides 
+group by passenger_id 
+)
+
+select
+cte1.driver_id, ifnull(cte2.cnt,0) as cnt 
+from 
+
+cte1 left join cte2 
+on cte1.driver_id =cte2.driver_id

@@ -1,0 +1,49 @@
+PROBLEM 2238:::
+
+with cte1 as (
+select
+
+distinct driver_id
+from 
+Rides 
+)
+, cte2 as (
+select 
+passenger_id as driver_id , count(*) as cnt
+from
+Rides 
+group by passenger_id 
+)
+
+select
+cte1.driver_id, ifnull(cte2.cnt,0) as cnt 
+from 
+
+cte1 left join cte2 
+on cte1.driver_id =cte2.driver_id
+
+PROBLEM 2292:::
+
+with cte as (
+select
+
+product_id, year(purchase_date) as ld1, count(*) as cnt
+
+from
+Orders
+group by product_id, year(purchase_date)
+having cnt >=3
+)
+
+, cte1 as (
+select
+*,lead(ld1) over(partition by product_id order by ld1 asc) as ld2
+
+from 
+cte)
+
+select distinct
+product_id
+from 
+cte1 
+where ld2 - ld1 =1

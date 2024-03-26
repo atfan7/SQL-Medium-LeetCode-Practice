@@ -47,3 +47,16 @@ product_id
 from 
 cte1 
 where ld2 - ld1 =1
+
+PROBELEM 2298:::
+
+select
+
+
+sum(case when weekDAY(submit_date) =0 or weekDAY(submit_date) =1 or weekDAY(submit_date) =2 or weekDAY(submit_date) =3 or weekDAY(submit_date) =4 then 1 else 0 end) as weekend_cnt
+,
+
+sum(case when weekDAY(submit_date) =5 or weekDAY(submit_date) =6 then 1 else 0 end) as working_cnt
+from 
+Tasks
+

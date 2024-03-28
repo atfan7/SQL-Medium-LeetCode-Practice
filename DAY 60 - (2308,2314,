@@ -16,3 +16,20 @@ Genders
 select user_id, gender
 from
 cte order by rnk ,gndr
+
+PROBLEM 2314:::
+
+with cte as (
+select
+*, max(degree) over(partition by city_id) as maxi
+from
+
+Weather
+)
+select
+city_id, min(day) as day, degree
+from 
+cte 
+where maxi=degree
+group by city_id
+order by city_id asc

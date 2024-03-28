@@ -33,3 +33,27 @@ cte
 where maxi=degree
 group by city_id
 order by city_id asc
+
+PROBLEM 2324:::
+
+with cte as (
+
+select
+user_id, s.product_id,sum(quantity*price) as total from
+
+Sales s
+left join Product p
+on s.product_id=p.product_id
+group by user_id,s.product_id
+)
+,cte2 as (
+select
+*, max(total) over(partition by user_id) as maxt
+from cte
+)
+select
+user_id,product_id
+from
+cte2
+
+where total=maxt

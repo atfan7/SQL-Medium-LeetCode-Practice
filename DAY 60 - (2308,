@@ -1,0 +1,18 @@
+PROBLEM 2308:::
+
+with cte as (
+select
+
+user_id,gender, dense_rank() over(partition by gender order by user_id) as rnk,
+case when gender ='female' then 1 
+when gender ='other' then 2 
+when gender ='male' then 3
+end as gndr 
+from
+
+Genders
+)
+
+select user_id, gender
+from
+cte order by rnk ,gndr

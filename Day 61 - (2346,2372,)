@@ -13,3 +13,22 @@ Students
 select
 student_id,department_id,ifnull( round (((rnk-1) *100)/(cnt-1),2),0) as percentage 
 from cte 
+
+
+PROBLEM 2372:::
+
+with cte as (
+select
+c.salesperson_id,sum(s.price) as price
+from 
+
+Customer c
+left join Sales s 
+on c.customer_id =s.customer_id
+group by c.salesperson_id
+)
+
+select
+sa.salesperson_id, sa.name ,ifnull(price,0) as total
+from Salesperson sa left join cte c
+on sa.salesperson_id=c. salesperson_id

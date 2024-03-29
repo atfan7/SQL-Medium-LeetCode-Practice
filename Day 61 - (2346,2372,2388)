@@ -32,3 +32,24 @@ select
 sa.salesperson_id, sa.name ,ifnull(price,0) as total
 from Salesperson sa left join cte c
 on sa.salesperson_id=c. salesperson_id
+
+PROBLEM 2388:::
+
+with cte as (
+select
+*,row_number() over() as rw ,
+case when drink is null then 0 else 1 end as pt 
+from 
+
+CoffeeShop
+)
+
+, cte2 as (
+select
+*, sum(pt) over(order by rw) as sm
+from cte )
+
+select
+id,first_value(drink) over(partition by sm order by rw asc) as drink
+from
+cte2

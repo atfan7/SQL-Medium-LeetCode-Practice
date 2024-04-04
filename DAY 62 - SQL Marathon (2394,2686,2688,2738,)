@@ -46,3 +46,18 @@ SELECT
 select 
 distinct user_id
 from cte where datediff(ld, created_at) <=7
+
+PROBLEM 2738 :::
+
+(
+select
+ 'bull' as 'word', count(case when content like '% bull %' then 1 end ) as count
+ from Files
+)
+ union all 
+(
+ select
+ 'bear' as 'word', count(case when content like '% bear %' then 1 end ) as count
+ from Files
+)
+

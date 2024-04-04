@@ -61,3 +61,28 @@ select
  from Files
 )
 
+PROBLEM 2783 :::
+
+with cte as (
+
+select
+flight_id, count(*) as cnt
+from 
+Passengers 
+group by flight_id)
+
+select
+f.flight_id,
+
+case when capacity<cnt then capacity
+when capacity >=cnt then cnt
+else 0 end as booked_cnt
+,
+
+case when cnt >capacity then cnt-capacity else 0 end as  waitlist_cnt
+
+from 
+
+Flights f left join cte c 
+on f.flight_id =c.flight_id
+order by flight_id asc 
